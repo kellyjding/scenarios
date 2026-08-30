@@ -1,0 +1,441 @@
+<title>CS50 Teaching Scenarios</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --paper: #ece6d6;
+    --paper-raised: #f4efe3;
+    --ink: #2a2823;
+    --ink-soft: #5c584e;
+    --line: #d6cdb4;
+    --accent: #a51c30;
+    --accent-ink: #f4efe3;
+    --shadow: rgba(42, 40, 35, 0.14);
+    --focus-ring: #a51c30;
+    --font-display: "Libre Baskerville", Georgia, serif;
+    --font-body: "PT Serif", Georgia, serif;
+    --font-mono: "Courier Prime", "Courier New", monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #1b1d19;
+      --paper-raised: #232620;
+      --ink: #ebe6d8;
+      --ink-soft: #a8a291;
+      --line: #3a3d34;
+      --accent: #e2536b;
+      --accent-ink: #2a1014;
+      --shadow: rgba(0, 0, 0, 0.4);
+      --focus-ring: #e2536b;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --paper: #1b1d19;
+    --paper-raised: #232620;
+    --ink: #ebe6d8;
+    --ink-soft: #a8a291;
+    --line: #3a3d34;
+    --accent: #e2536b;
+    --accent-ink: #2a1014;
+    --shadow: rgba(0, 0, 0, 0.4);
+    --focus-ring: #e2536b;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-body);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: clamp(20px, 5vw, 56px) 20px 80px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+  }
+
+  .wrap { width: 100%; max-width: 720px; }
+
+  /* ---------- Header ---------- */
+  header.top {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 36px;
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  h1 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(2.1rem, 5vw, 2.9rem);
+    line-height: 1.05;
+    margin: 0;
+    text-wrap: balance;
+    letter-spacing: -0.01em;
+  }
+
+  .dek {
+    color: var(--ink-soft);
+    font-size: 1rem;
+    line-height: 1.55;
+    max-width: 56ch;
+    margin: 2px 0 0;
+  }
+
+  /* ---------- Card ---------- */
+  .card {
+    position: relative;
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    padding: clamp(28px, 5vw, 44px);
+    box-shadow: 0 1px 2px var(--shadow), 0 12px 28px -18px var(--shadow);
+    clip-path: polygon(0 10px, 4% 0, 96% 0, 100% 10px, 100% 100%, 0 100%);
+  }
+
+  .card-tag {
+    margin-bottom: 18px;
+  }
+
+  .card-num {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+    text-transform: uppercase;
+  }
+
+  .scenario-text {
+    font-family: var(--font-display);
+    font-size: clamp(1.18rem, 2.6vw, 1.42rem);
+    line-height: 1.5;
+    font-weight: 400;
+    margin: 0 0 30px;
+    text-wrap: pretty;
+  }
+
+  .scenario-text q { quotes: "\201C" "\201D"; font-style: italic; }
+
+  label.field-label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 8px;
+  }
+
+  textarea {
+    width: 100%;
+    min-height: 130px;
+    resize: vertical;
+    background: transparent;
+    color: var(--ink);
+    border: none;
+    border-top: 1px solid var(--line);
+    padding-top: 14px;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    line-height: 1.9;
+    background-image: repeating-linear-gradient(var(--paper-raised) 0 45px, var(--line) 46px, var(--paper-raised) 47px);
+    background-position-y: 14px;
+  }
+  textarea:focus {
+    outline: none;
+  }
+  textarea:focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 4px;
+  }
+  textarea::placeholder { color: var(--ink-soft); opacity: 0.6; }
+
+  .save-hint {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--ink-soft);
+    margin-top: 10px;
+    height: 14px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .save-hint.show { opacity: 1; }
+
+  /* ---------- Nav ---------- */
+  .nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 22px;
+    gap: 12px;
+  }
+
+  button {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 0.88rem;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: transform 0.12s ease, background 0.15s ease, border-color 0.15s ease, opacity 0.15s ease;
+  }
+  button:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+  button:active { transform: translateY(1px); }
+
+  .btn-nav {
+    background: var(--paper-raised);
+    border: 1.5px solid var(--line);
+    color: var(--ink);
+    padding: 11px 20px;
+  }
+  .btn-nav:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+  .btn-nav:disabled { opacity: 0.35; cursor: default; }
+
+  .btn-primary {
+    background: var(--accent);
+    border: 1.5px solid var(--accent);
+    color: var(--accent-ink);
+    padding: 11px 22px;
+  }
+  .btn-primary:hover { filter: brightness(1.08); }
+
+  /* ---------- Footer utility row ---------- */
+  .utility {
+    display: flex;
+    justify-content: center;
+    gap: 18px;
+    margin-top: 34px;
+    flex-wrap: wrap;
+  }
+
+  .link-btn {
+    background: none;
+    border: none;
+    color: var(--ink-soft);
+    font-size: 0.82rem;
+    padding: 4px;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: var(--line);
+  }
+  .link-btn:hover { color: var(--accent); text-decoration-color: var(--accent); }
+
+  /* ---------- Review (table-talk) view ---------- */
+  .review { display: none; }
+  .review.active { display: block; }
+  .single { display: block; }
+  .single.hidden { display: none; }
+
+  .review-head { margin-bottom: 26px; }
+  .review-item {
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    padding: 20px 24px;
+    margin-bottom: 14px;
+  }
+  .review-item .card-num { display: block; margin-bottom: 8px; }
+  .review-item .scenario-text { font-size: 1.02rem; margin-bottom: 12px; }
+  .review-answer {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--ink);
+    border-top: 1px solid var(--line);
+    padding-top: 12px;
+    white-space: pre-wrap;
+  }
+  .review-answer.empty { color: var(--ink-soft); font-style: italic; }
+
+  @media print {
+    body { padding: 0; background: #fff; color: #000; }
+    .utility, .nav, .save-hint, .eyebrow { display: none !important; }
+    .single { display: none !important; }
+    .review { display: block !important; }
+    .card, .review-item { box-shadow: none; clip-path: none; border: 1px solid #ccc; break-inside: avoid; }
+  }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <h1>CS50 Teaching Scenarios</h1>
+    <p class="dek">Read each scenario, jot down how you might react, and discuss with your table questions or dilemmas that arose.</p>
+  </header>
+
+  <div class="single" id="singleView">
+    <div class="nav">
+      <button class="btn-nav" id="prevBtn">← Previous</button>
+      <button class="btn-primary" id="nextBtn">Next →</button>
+    </div>
+
+    <div class="card" id="card">
+      <div class="card-tag">
+        <span class="card-num" id="cardNum">Scenario 1 / 8</span>
+      </div>
+      <p class="scenario-text" id="scenarioText"></p>
+      <label class="field-label" for="answerBox">What would you say or do?</label>
+      <textarea id="answerBox" placeholder="Jot down a line or two."></textarea>
+      <div class="save-hint" id="saveHint">Saved</div>
+    </div>
+
+    <div class="utility">
+      <button class="link-btn" id="reviewBtn">View all</button>
+      <button class="link-btn" id="resetBtn">Clear my answers</button>
+    </div>
+  </div>
+
+  <div class="review" id="reviewView">
+    <div class="review-head">
+      <h1 style="font-size: 1.6rem;">Your Responses</h1>
+    </div>
+    <div id="reviewList"></div>
+    <div class="utility" style="margin-top: 8px;">
+      <button class="link-btn" id="backBtn">← Back to scenarios</button>
+      <button class="link-btn" id="printBtn">Print this view</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var SCENARIOS = [
+    {
+      text: "A student comes to you during office hours and shares that they’re feeling overwhelmed by the complexity of the psets, and mentions they feel like they’ll never reach the same level of understanding as you. They say they’re considering dropping the course because they don’t think they have what it takes to succeed."
+    },
+    {
+      text: "During office hours, a student waves you over for help and asks, “I finished the pset, but would this be a 5 for design?”"
+    },
+    {
+      text: "During your section, you notice the same three students are answering all your questions."
+    },
+    {
+      text: "A student asks you if they are “on track to get an A.”"
+    },
+    {
+      text: "At Sunday office hours for the Finance pset, a student you’re helping is very stressed about not being able to finish. One of the student’s friends working next to them says, “My friend who took this class last year sent me their pset — do you want me to send it to you?”"
+    },
+    {
+      text: "At office hours, a student asks you to explain the starter code for a pset, then goes on their phone while you’re explaining and pointing out the lines of code."
+    },
+    {
+      text: "A student comes to office hours upset about their final project. They’ve done most of the work and don’t think their partner is contributing fairly. They ask how the final project will be graded, and say they’re worried about not finishing because of their partner."
+    },
+    {
+      text: "You notice a student sent you multiple emails late at night asking if you could check their code. The next time they see you at office hours, they ask why you didn’t respond and emphasize that it was “urgent.”"
+    }
+  ];
+
+  var STORAGE_KEY = "office-hours-scenarios-v1";
+  var state = { current: 0, answers: {} };
+
+  function load() {
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) {
+        var parsed = JSON.parse(raw);
+        if (parsed && typeof parsed === "object") state.answers = parsed;
+      }
+    } catch (e) { /* private browsing / blocked storage: fall back to in-memory only */ }
+  }
+
+  function persist() {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state.answers)); } catch (e) { /* ignore */ }
+  }
+
+  var cardNum = document.getElementById("cardNum");
+  var scenarioText = document.getElementById("scenarioText");
+  var answerBox = document.getElementById("answerBox");
+  var saveHint = document.getElementById("saveHint");
+  var prevBtn = document.getElementById("prevBtn");
+  var nextBtn = document.getElementById("nextBtn");
+  var singleView = document.getElementById("singleView");
+  var reviewView = document.getElementById("reviewView");
+  var reviewList = document.getElementById("reviewList");
+
+  function renderCard() {
+    var s = SCENARIOS[state.current];
+    cardNum.textContent = "Scenario " + (state.current + 1) + " / " + SCENARIOS.length;
+    scenarioText.textContent = s.text;
+    answerBox.value = state.answers[state.current] || "";
+    prevBtn.disabled = state.current === 0;
+    nextBtn.textContent = state.current === SCENARIOS.length - 1 ? "Finish →" : "Next →";
+  }
+
+  function goTo(i) {
+    state.current = Math.max(0, Math.min(SCENARIOS.length - 1, i));
+    renderCard();
+    answerBox.focus({ preventScroll: true });
+  }
+
+  var saveTimer;
+  answerBox.addEventListener("input", function () {
+    state.answers[state.current] = answerBox.value;
+    persist();
+    saveHint.classList.add("show");
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(function () { saveHint.classList.remove("show"); }, 900);
+  });
+
+  prevBtn.addEventListener("click", function () { goTo(state.current - 1); });
+  nextBtn.addEventListener("click", function () {
+    if (state.current === SCENARIOS.length - 1) {
+      showReview();
+    } else {
+      goTo(state.current + 1);
+    }
+  });
+
+  function showReview() {
+    reviewList.innerHTML = "";
+    SCENARIOS.forEach(function (s, i) {
+      var item = document.createElement("div");
+      item.className = "review-item";
+      var answer = (state.answers[i] || "").trim();
+      item.innerHTML =
+        '<span class="card-num">Scenario ' + (i + 1) + '</span>' +
+        '<p class="scenario-text">' + s.text.replace(/</g, "&lt;") + '</p>' +
+        '<div class="review-answer' + (answer ? '' : ' empty') + '">' +
+        (answer ? answer.replace(/</g, "&lt;") : "No notes yet — jump back and add some.") +
+        '</div>';
+      reviewList.appendChild(item);
+    });
+    singleView.classList.add("hidden");
+    reviewView.classList.add("active");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  document.getElementById("reviewBtn").addEventListener("click", showReview);
+  document.getElementById("backBtn").addEventListener("click", function () {
+    reviewView.classList.remove("active");
+    singleView.classList.remove("hidden");
+  });
+  document.getElementById("printBtn").addEventListener("click", function () { window.print(); });
+
+  document.getElementById("resetBtn").addEventListener("click", function () {
+    if (confirm("Clear all your notes on this device? This can’t be undone.")) {
+      state.answers = {};
+      persist();
+      renderCard();
+    }
+  });
+
+  load();
+  renderCard();
+})();
+</script>
